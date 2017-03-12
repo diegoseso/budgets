@@ -3,7 +3,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/jessie64"
   config.vm.hostname = "budgets"
-  config.vm.network :private_network, ip: "192.168.0.40"
+  config.vm.network :private_network, type: "dhcp"
 
   config.vm.provider :virtualbox do |vb|
     vb.customize [
@@ -12,4 +12,5 @@ Vagrant.configure("2") do |config|
       "--memory", "512",
     ]
   end
+  config.vm.provision :shell, path: "setup.sh"
 end
