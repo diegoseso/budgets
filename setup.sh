@@ -1,4 +1,4 @@
 #! /bin/bash
 
-apt-get update
-apt-get php5
+apt-get install update
+apt-get install php5
