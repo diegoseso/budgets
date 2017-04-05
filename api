@@ -1,0 +1,20 @@
+#use domain as domain
+
+domain/api/budgets/${filters} 
+verbs: GET 
+return: json containing all budgets
+where ${filters} is any kind of the following:
+ordering -> order ASC / DSC 
+
+domain/api/budgets
+verbs: POST
+parameters: {description, amount, creator, budgetDate, files}
+
+
+domain/api/budgets/${id}
+verbs: POST
+parameters: {id}{description, amount,budgetDate,files}
+
+domain/api/budgets/${id}
+verbs: DELETE
+
