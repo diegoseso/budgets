@@ -1,0 +1,1 @@
+[2017-04-11 17:06:16] php.CRITICAL: Fatal Error: Undefined constant 'AppBundle\Document' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalErrorException(code: 0): Error: Undefined constant 'AppBundle\\Document' at /home/diegoseso/budgets/src/AppBundle/Document/Product.php:3)"} []
