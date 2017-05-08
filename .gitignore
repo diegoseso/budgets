@@ -3,3 +3,4 @@
 composer.lock
 /frontend/node_modules
 /frontend/npm-debug.log
+.vagrant
