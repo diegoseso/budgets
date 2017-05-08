@@ -2,19 +2,22 @@
 	<div>
 		<ul id="budgets-list" v-if="budgets != null">
 			<li v-for="budget in budgets">
-				<strong>{{budget.description}}</strong>
-				<p>
-					<router-link :to="{name: 'budget', params:{id: budget.id}}">View</router-link>
-					<router-link :to="{name: 'edit-budget', params:{id: budget.id}}">Edit</router-link>
+				<div style="border:1px;background-color:#f7f7f7;border-radius:4px">
+                                    <strong>{{budget.description}}</strong>
+                                    <h1 style="text-align:center">{{budget.amount}} {{budget.currency}}</h1>
+				    <p style="text-align:center">
+					<router-link :to="{name: 'budget', params:{id: budget.id}}"><span class="glyphicon glyphicon-sunglasses" style="color:#767777"></span>View</router-link>
+					<router-link :to="{name: 'edit-budget', params:{id: budget.id}}"><span class="glyphicon glyphicon-edit" style="color:#767777"></span>Edit</router-link>
 					<span v-if="showDelete != budget.id">
-							<a @click="deleteBudget(budget.id)" style="cursor:pointer;">delete</a>
+							<span class="glyphicon glyphicon-remove" style="color:#767777"></span><a @click="deleteBudget(budget.id)" style="cursor:pointer;text-decoration:underline">delete</a>
 					</span>
 				 	<span v-else>
 				 		<p>Are you sure you want to delete the budget?</p>
 				 		<button @click="cancelDeletion()">Cancel</button>
 				 		<button @click="confirmDeletion( budget.id )">Delete</button>
 					</span>
-				</p>
+				    </p>
+                                </div>
 			</li>
 		</ul>
 		<span v-else>Loading Budgets...</span>
@@ -71,5 +74,8 @@ export default {
 			padding: 20px;
 			overflow:hidden;
 		}
-	}
+	},
+       span > glyphicon{
+           color:#dddddd
+       }
 </style>
