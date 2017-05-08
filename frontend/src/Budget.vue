@@ -1,0 +1,31 @@
+<template>
+	<div>
+		<h1>Budget details for # {{id}}</h1>
+		<div id="budget-details" v-if="budget != null">
+			<h2 v-text="budget.name"></h2>
+			<p v-text="budget.description"></p>
+		</div>
+		<span v-else>Loading Budget...</span>
+	</div>
+</template>
+
+<script>
+import axios from 'axios';
+export default{
+	name: 'budget-details',
+	mounted(){
+		this.id = this.$route.params.id;
+
+		axios.get('../budget/'+this.id)
+		     .then((respuesta) => {
+		     	this.budget = respuesta.data.data;
+		     });
+	},
+	data(){
+		return {
+			id: null,
+			restaurante: null
+		}
+	}
+}
+</script>
