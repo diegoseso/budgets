@@ -79,10 +79,5 @@ fi
 
 # time to run dev project 
 cd /var/www/html/budgets/frontend
-<<<<<<< HEAD
 npm install
 npm run dev
-=======
-npm install &2> /dev/null
-npm run dev &
->>>>>>> 750ea8546127c56918d164b611ffd8dc559db406
