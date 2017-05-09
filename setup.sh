@@ -18,6 +18,8 @@ fi
 
 apt-get update
 
+apt-get install openssh-server
+
 # we always need vim
 apt-get install -y vim
 
@@ -78,6 +80,4 @@ fi
 # time to run dev project 
 cd /var/www/html/budgets/frontend
 npm install
-npm run dev &
-
-ps | grep npm
+npm run dev
