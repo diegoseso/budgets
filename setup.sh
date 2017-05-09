@@ -89,6 +89,7 @@ composer install
 
 chmod 775 --recursive /var/www/html/budgets/var/cache/prod
 chmod 775 --recursive /var/www/html/budgets/var/cache/dev
+chmod 775 --recursive /var/www/html/budgets/var/logs
 usermod -G www-data vagrant
 usermod -G vagrant www-data
 
