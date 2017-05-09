@@ -2,16 +2,24 @@
 
 # Here we will add a php7 repo
 
-echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list 
-echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+SOURCES_CHAR=$(cat /etc/apt/sources.list | grep dotdeb | wc -c );
 
-wget -nv https://www.dotdeb.org/dotdeb.gpg
-sudo apt-key add dotdeb.gpg
+if [ ${SOURCES_CHAR} -eq 0 ] ;then 
+    echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list 
+    echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list
+fi 
+
+IS_DOTDEB_DOWNLOADED=$(ls -altr | grep dotdeb | wc -c )
+
+if [ ${IS_DOTDEB_DOWNLOADED} -eq 0 ] ;then
+    wget -nv https://www.dotdeb.org/dotdeb.gpg
+    sudo apt-key add dotdeb.gpg
+fi
 
 apt-get update
 
 # we always need vim
-apt-get install vim
+apt-get install -y vim
 
 apt-get install -y php7.0
 
@@ -40,9 +48,36 @@ chmod 777 /usr/local/bin/composer
 #Install mongodb from default
 apt-get install -y mongodb
 
-sudo su
-wget -O - https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x64.tar.xz | tar Jx --strip=1 -C /usr/local
-exit
-node --version
+# node installation
 
-npm install -g npm
+IS_NODE_INSTALLED=$(which node | wc -c )
+IS_NPM_INSTALLED=$(which npm | wc -c )
+
+if [ ${IS_NODE_INSTALLED} -eq 1 ] ;then
+    sudo su
+    wget -O - https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x64.tar.xz | tar Jx --strip=1 -C /usr/local
+    exit
+    node --version
+fi
+
+if [ ${IS_NPM_INSTALLED} -eq 1 ];then
+    # npm installation
+    npm install -g npm
+    npm --version
+fi 
+
+# Gits installataion
+apt-get install -y git
+
+# project
+
+if [ !  -L '/var/www/html/budgets' ] ;then
+    ln -fs /vagrant /var/www/html/budgets 
+fi
+
+# time to run dev project 
+cd /var/www/html/budgets/frontend
+npm install
+npm run dev &
+
+ps | grep npm
