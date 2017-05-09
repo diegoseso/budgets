@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     vb.customize [
       "modifyvm", :id,
       "--cpuexecutioncap", "50",
-      "--memory", "512",
+      "--memory", "768",
     ]
   end
   config.vm.provision :shell, path: "setup.sh"

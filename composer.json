@@ -32,6 +32,7 @@
         "friendsofsymfony/rest-bundle": "^2.1",
         "jms/serializer-bundle": "*",
         "nelmio/cors-bundle": "*",
+        "alcaeus/mongo-php-adapter":"*",
         "doctrine/mongodb-odm": "^1.0",
         "doctrine/mongodb-odm-bundle": "^3.0"
     },

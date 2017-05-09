@@ -36,6 +36,9 @@ Since I wanted to try new stuff and investigate further regarding SPA and not ta
 Just run 
     vagrant up 
 
+grab a cup of coffee while vagrant does everything for you, once it says that project is running, you just need to go to your favorite browser locally 
+and go to:
+    http://localhost:8080
 
 # INSPIRATION NOTE
 

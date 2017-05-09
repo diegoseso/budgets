@@ -23,8 +23,9 @@ apt-get install openssh-server
 # we always need vim
 apt-get install -y vim
 
-apt-get install -y php7.0
+apt-get install -y php7.0 php7.0-mongo
 
+apache2ctl restart
 #DATABASE_NAME=budgets
 #DATABASE_ROOT_PASSWORD=test
 #DATABASE_USER=budgets
@@ -49,12 +50,14 @@ chmod 777 /usr/local/bin/composer
 
 #Install mongodb from default
 apt-get install -y mongodb
+mkdir -p /data/db
 
 # node installation
 
 IS_NODE_INSTALLED=$(which node | wc -c )
 IS_NPM_INSTALLED=$(which npm | wc -c )
 
+# Installing node from the ground up
 if [ ${IS_NODE_INSTALLED} -eq 1 ] ;then
     sudo su
     wget -O - https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x64.tar.xz | tar Jx --strip=1 -C /usr/local
@@ -62,8 +65,8 @@ if [ ${IS_NODE_INSTALLED} -eq 1 ] ;then
     node --version
 fi
 
+# npm installation
 if [ ${IS_NPM_INSTALLED} -eq 1 ];then
-    # npm installation
     npm install -g npm
     npm --version
 fi 
@@ -77,7 +80,18 @@ if [ !  -L '/var/www/html/budgets' ] ;then
     ln -fs /vagrant /var/www/html/budgets 
 fi
 
+#Running mongo silently
+mongod --fork --logpath /var/www/html/budgets/var/mongod.log
+
 # time to run dev project 
-cd /var/www/html/budgets/frontend
+cd /var/www/html/budgets
+composer install
+
+chmod 775 --recursive /var/www/html/budgets/var/cache/prod
+chmod 775 --recursive /var/www/html/budgets/var/cache/dev
+usermod -G www-data vagrant
+usermod -G vagrant www-data
+
+cd frontend
 npm install
 npm run dev
