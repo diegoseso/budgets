@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Document\Product;
+use AppBundle\Document\Budget;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,15 +15,17 @@ class BudgetController extends Controller
      * @Route("/budget/add", name="create")
      * @Method({"PUT"})
      */
-    public function newAction()
+    public function newAction( Request $data )
     {
-        $product = new Product();
-        $product->setName('A Foo Bar');
-        $product->setPrice('19.99');
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $dm->persist($product);
-        $dm->flush();
-        return new Response( json_encode( array( 'id'=>$product->getId() ) ) );
+        $budget = new Budget();
+        $budget->setName( $data->request->get( 'name' ) );
+        $budget->setAmount( $data->request->get( 'amount' ) );
+
+        $mongoD = $this->get('doctrine_mongodb')->getManager();
+        $mongoD->persist($budget);
+        $mongoD->flush();
+        
+        return new Response( json_encode( array( 'id'=>$budget->getId() ) ) );
     }
     
     /**
@@ -33,7 +35,7 @@ class BudgetController extends Controller
     public function getAction($id)
     {
         $product = $this->get('doctrine_mongodb')
-            ->getRepository('AppBundle:Product')
+            ->getRepository('AppBundle:Budget')
             ->find($id);
         if (!$product) {
             throw $this->createNotFoundException('No product found for id '.$id);
