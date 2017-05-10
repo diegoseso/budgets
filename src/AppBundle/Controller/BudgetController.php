@@ -77,7 +77,7 @@ class BudgetController extends Controller
         $id = $request->request->get('id');
         $name = $request->request->get('name');
         $product = $this->get('doctrine_mongodb')
-            ->getRepository('AppBundle:Product')
+            ->getRepository('AppBundle:Budget')
             ->find($id);
         if (!$product) {
             throw $this->createNotFoundException('No product found for id '.$id);
@@ -89,23 +89,23 @@ class BudgetController extends Controller
         die();
     }
     /**
-     * @Route("/budget/delete", name="delete")
+     * @Route("/budget/delete/{id}", name="delete")
      * @Method({"DELETE"})
      */
-    public function deleteAction( Request $request)
+    public function deleteAction( $id )
     {
-        $id = $request->request->get('id');
-        
         $budget = $this->get('doctrine_mongodb')
-            ->getRepository('AppBundle:Product')
-            ->find($id);
+            ->getRepository('AppBundle:Budget')
+            ->find( $id );
         if ( !$budget ) {
             throw $this->createNotFoundException('No product found for id '.$id);
         }
         
         $mongoD = $this->get('doctrine_mongodb')->getManager();
-        $mongoD->remove( $product );
+        $mongoD->remove( $budget );
         $mongoD->flush();
+        return new Response( json_encode( array( 'status'=>'success' ) ) );
+    
     }
 
     private function convertToArray( $object )

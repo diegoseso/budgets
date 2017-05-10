@@ -35,12 +35,15 @@ export default {
     return {
       texto: 'Budgets List',
       budgets: null,
-      showDelete: null
+      showDelete: null,
+      budget:{
+          id:null
+      }
     }
   },
   methods: {
   	getBudgets(){
-  		axios.get('http://localhost:8081/budgets/web/app.php/budget/list')
+  	       axios.get('http://localhost:8081/budgets/web/app.php/budget/list')
   			 .then((answer) => {
   			 	this.budgets = answer.data.data;
   			 });
@@ -52,9 +55,7 @@ export default {
   		this.showDelete = null;
   	},
   	confirmDeletion( id ){
-				
-            var params = "json="+JSON.stringify(this.id);
-            axios.delete('http://localhost:8081/budgets/web/app.php/budget/delete/', this.id )
+            axios.delete('http://localhost:8081/budgets/web/app.php/budget/delete/'+ id )
   		     .then(( answer ) => {
   		     	this.showDelete = null;
   		     	this.getBudgets();
