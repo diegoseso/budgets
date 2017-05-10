@@ -80,4 +80,9 @@ class Budget
     {
         return $this->amount;
     }
+
+    public function toArray()
+    {
+        return array( 'id' => $this->getId(), 'name'=>$this->getName(), 'amount'=>$this->getAmount() );
+    }
 }

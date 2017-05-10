@@ -1,14 +1,14 @@
 <template>
 	<div id="budget-add">
 		<h2>Create new budget</h2>
-		<form v-on:submit.prevent="saveBudget>
+		<form v-on:submit.prevent="saveBudget">
 			<p>
 				<label>Description</label>
-				<input type="text" v-model="budget.description">
+				<input type="text" v-model="budget.name" />
 			</p>
 			<p>
 				<label>Total Amount</label>
-				<input type="text" v-model="budget.amount">
+				<input type="text" v-model="budget.amount" />
 			</p>
 			<p>
 				<label>Provider</label>
@@ -34,7 +34,7 @@
 		data(){
 			return {
 			           budget: {
-					description: '',
+					name: '',
 					provider: 'none',
 					amount: 0
 				}
@@ -45,9 +45,8 @@
 				var router = this.$router;
 
 				var params = "json="+JSON.stringify(this.budget);
-				axios.post('../budgets', params)
+				axios.put('http://localhost:8081/budgets/web/app.php/budget/add', params)
 				     .then((answer)=>{
-				     	
 				     	if( answer.data.status == 'success'){
 				     		router.push('/budgets');
 				     	}

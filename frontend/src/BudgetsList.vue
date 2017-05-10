@@ -3,7 +3,7 @@
 		<ul id="budgets-list" v-if="budgets != null">
 			<li v-for="budget in budgets">
 				<div style="border:1px;background-color:#f7f7f7;border-radius:4px">
-                                    <strong>{{budget.description}}</strong>
+                                    <strong>{{budget.name}}</strong>
                                     <h1 style="text-align:center">{{budget.amount}} {{budget.currency}}</h1>
 				    <p style="text-align:center">
 					<router-link :to="{name: 'budget', params:{id: budget.id}}"><span class="glyphicon glyphicon-sunglasses" style="color:#767777"></span>View</router-link>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
   	getBudgets(){
-  		axios.get('/api/budgets.json')
+  		axios.get('http://localhost:8081/budgets/web/app.php/budget/list')
   			 .then((answer) => {
   			 	this.budgets = answer.data.data;
   			 });

@@ -16,16 +16,19 @@ export default{
 	mounted(){
 		this.id = this.$route.params.id;
 
-		axios.get('../budget/'+this.id)
-		     .then((respuesta) => {
-		     	this.budget = respuesta.data.data;
+		axios.get('http://localhost:8081/budgets/web/app.php/budget/view/'+this.id)
+		     .then(( answer ) => {
+		     	this.budget = answer.data;
 		     });
 	},
 	data(){
 		return {
-			id: null,
-			restaurante: null
-		}
+	            budget: {
+                        id: null,
+			name: null,
+                        amount:null
+		    }
+                }
 	}
 }
 </script>

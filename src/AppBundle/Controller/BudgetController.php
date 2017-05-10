@@ -18,14 +18,17 @@ class BudgetController extends Controller
     public function newAction( Request $data )
     {
         $budget = new Budget();
-        $budget->setName( $data->request->get( 'name' ) );
-        $budget->setAmount( $data->request->get( 'amount' ) );
+
+        $dataForBudget = json_decode( $data->request->get( 'json' ) ); 
+
+        $budget->setName( $dataForBudget->name );
+        $budget->setAmount( $dataForBudget->amount );
 
         $mongoD = $this->get('doctrine_mongodb')->getManager();
         $mongoD->persist($budget);
         $mongoD->flush();
         
-        return new Response( json_encode( array( 'id'=>$budget->getId() ) ) );
+        return new Response( json_encode( array( 'status'=>'success', 'id'=>$budget->getId() ) ) );
     }
     
     /**
@@ -34,14 +37,36 @@ class BudgetController extends Controller
      */
     public function getAction($id)
     {
-        $product = $this->get('doctrine_mongodb')
+        $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
-            ->find($id);
-        if (!$product) {
+            ->find( $id );
+        if ( !$budget ) {
+            throw $this->createNotFoundException( 'No product found for id '.$id );
+        }
+        return new Response( json_encode( array( 'status'=>'success', 'data'=>$this->convertToArray( $budget ) ) ) );
+    }
+
+    /**
+     * @Route("/budget/list", name="getList")
+     * @Method({"GET"})
+     */
+    public function getListAction()
+    {
+        $budgets = $this->get('doctrine_mongodb')
+            ->getRepository('AppBundle:Budget')
+            ->findAll();
+        
+        foreach( $budgets as $budget ){
+            $budgetList[] = $this->convertToArray( $budget ); 
+        }
+        
+        if (!$budgets) {
             throw $this->createNotFoundException('No product found for id '.$id);
         }
-        return new Response( json_encode( array( 'name'=>$product->getName() ) ) );
+        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budgetList ) ) );
     }
+
+
 
     /**
      * @Route("/budget/modify", name="alter")
@@ -80,5 +105,10 @@ class BudgetController extends Controller
         $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->remove( $product );
         $dm->flush();
+    }
+
+    private function convertToArray( $object )
+    {
+        return $object->toArray();
     }
 }
