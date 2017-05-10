@@ -68,11 +68,6 @@ class appProdDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBun
             return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::indexAction',  '_route' => 'homepage',);
         }
 
-        // helloWorld
-        if ($pathinfo === '/hello-world') {
-            return array (  '_controller' => 'AppBundle\\Controller\\DefaultController::helloWorldAction',  '_route' => 'helloWorld',);
-        }
-
         if (0 === strpos($pathinfo, '/api/budgets')) {
             // api_budgets_get_budgets
             if (preg_match('#^/api/budgets(?:\\.(?P<_format>json|html))?$#s', $pathinfo, $matches)) {

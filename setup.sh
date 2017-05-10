@@ -2,6 +2,9 @@
 
 # Here we will add a php7 repo
 
+apt-get install -y build-essential module-assistant
+m-a prepare
+
 SOURCES_CHAR=$(cat /etc/apt/sources.list | grep dotdeb | wc -c );
 
 if [ ${SOURCES_CHAR} -eq 0 ] ;then 
@@ -23,7 +26,7 @@ apt-get install openssh-server
 # we always need vim
 apt-get install -y vim
 
-apt-get install -y php7.0 php7.0-mongo
+apt-get install -y php7.0 php7.0-mongo php7.0-dom
 
 apache2ctl restart
 #DATABASE_NAME=budgets
@@ -58,10 +61,8 @@ IS_NODE_INSTALLED=$(which node | wc -c )
 IS_NPM_INSTALLED=$(which npm | wc -c )
 
 # Installing node from the ground up
-if [ ${IS_NODE_INSTALLED} -eq 1 ] ;then
-    sudo su
+if [ ${IS_NODE_INSTALLED} -eq 0 ] ;then
     wget -O - https://nodejs.org/dist/v6.10.3/node-v6.10.3-linux-x64.tar.xz | tar Jx --strip=1 -C /usr/local
-    exit
     node --version
 fi
 
@@ -95,5 +96,5 @@ usermod -G www-data vagrant
 usermod -G vagrant www-data
 
 cd frontend
-npm install
+sudo npm install
 npm run dev

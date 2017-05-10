@@ -19,12 +19,4 @@ class DefaultController extends Controller
         ]);
     }
     
-    /**
-     * @Route("/hello-world", name="helloWorld")
-     */
-    public function helloWorldAction(Request $request)
-    {
-        echo "Hello world !!";
-        die();
-    }
 }

@@ -3,4 +3,9 @@
 composer.lock
 /frontend/node_modules
 /frontend/npm-debug.log
+/var/cache/dev
+/var/cache/prod
+/var/logs
+/var/mongod.log*
+setupGA.sh
 .vagrant

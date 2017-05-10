@@ -24,7 +24,7 @@ class ProductController extends Controller
         $dm->persist($product);
         $dm->flush();
 
-        return new Response('Created product id '.$product->getId());
+        return new Response( json_encode( array( 'id'=>$product->getId() ) ) );
     }
 
     /**
@@ -39,8 +39,7 @@ class ProductController extends Controller
         if (!$product) {
             throw $this->createNotFoundException('No product found for id '.$id);
         }
-        echo $product->getName();
-        die(); 
+        return $product;
     }
 
     /**
