@@ -1,4 +1,4 @@
 api_budgets:
     type: rest
-    resource: "@AppBundle/Controller/BudgetsController.php"
-    name_prefix:  api_budgets_
+    resource: "@AppBundle/Controller/BudgetController.php"
+    name_prefix:  api_budget_

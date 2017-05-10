@@ -24,7 +24,7 @@ class Product
     /**
      * @MongoDB\Field(type="float")
      */
-    protected $price;
+    protected $amount;
 
 
     /**
@@ -60,24 +60,24 @@ class Product
     }
 
     /**
-     * Set price
+     * Set amount
      *
-     * @param float $price
+     * @param float $amount
      * @return $this
      */
-    public function setPrice($price)
+    public function setAmount( $amount ) 
     {
-        $this->price = $price;
+        $this->amount = $amount;
         return $this;
     }
 
     /**
-     * Get price
+     * Get amount
      *
-     * @return float $price
+     * @return float $amount
      */
-    public function getPrice()
+    public function getAmount()
     {
-        return $this->price;
+        return $this->amount;
     }
 }
