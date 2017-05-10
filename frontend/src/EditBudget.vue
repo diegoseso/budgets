@@ -1,14 +1,14 @@
 <template>
-	<div id="budget-add">
+	<div id="budget-edit">
 		<h2>Edit budget</h2>
 		<form v-on:submit.prevent="saveBudget>
 			<p>
-				<label>Description</label>
-				<input type="text" v-model="budget.description">
-			</p>
-			<p>
 				<label>Total Amount</label>
 				<input type="text" v-model="budget.amount">
+			</p>
+			<p>
+				<label>Description</label>
+				<input type="text" v-model="budget.name">
 			</p>
 			<p>
 				<label>Provider</label>
@@ -34,9 +34,10 @@
 		data(){
 			return {
 			           budget: {
-					description: '',
+					name: '',
 					provider: 'none',
-					amount: 0
+					amount: '0',
+                                        currency: 'EUR'
 				}
 			};
 		},

@@ -52,7 +52,9 @@ export default {
   		this.showDelete = null;
   	},
   	confirmDeletion( id ){
-  		axios.get('../delete-restaurante/'+id)
+				
+            var params = "json="+JSON.stringify(this.id);
+            axios.delete('http://localhost:8081/budgets/web/app.php/budget/delete/', this.id )
   		     .then(( answer ) => {
   		     	this.showDelete = null;
   		     	this.getBudgets();

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Budget details for # {{id}}</h1>
+		<h1>Budget details for # {{budget.name}}</h1>
 		<div id="budget-details" v-if="budget != null">
 			<h2 v-text="budget.name"></h2>
 			<p v-text="budget.description"></p>
@@ -18,7 +18,8 @@ export default{
 
 		axios.get('http://localhost:8081/budgets/web/app.php/budget/view/'+this.id)
 		     .then(( answer ) => {
-		     	this.budget = answer.data;
+                        console.log( answer );
+		     	this.budget = answer.data.data;
 		     });
 	},
 	data(){

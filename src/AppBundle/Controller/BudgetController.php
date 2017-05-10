@@ -96,15 +96,16 @@ class BudgetController extends Controller
     {
         $id = $request->request->get('id');
         
-        $product = $this->get('doctrine_mongodb')
+        $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Product')
             ->find($id);
-        if (!$product) {
+        if ( !$budget ) {
             throw $this->createNotFoundException('No product found for id '.$id);
         }
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $dm->remove( $product );
-        $dm->flush();
+        
+        $mongoD = $this->get('doctrine_mongodb')->getManager();
+        $mongoD->remove( $product );
+        $mongoD->flush();
     }
 
     private function convertToArray( $object )
