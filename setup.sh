@@ -86,7 +86,7 @@ mongod --fork --logpath /var/www/html/budgets/var/mongod.log
 
 # time to run dev project 
 cd /var/www/html/budgets
-composer install
+composer install --ignore-platform-reqs
 
 chmod 775 --recursive /var/www/html/budgets/var/cache/prod
 chmod 775 --recursive /var/www/html/budgets/var/cache/dev
