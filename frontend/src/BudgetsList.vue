@@ -7,7 +7,7 @@
                                     <h1 style="text-align:center">{{budget.amount}} {{budget.currency}}</h1>
 				    <p style="text-align:center">
 					<router-link :to="{name: 'budget', params:{id: budget.id}}"><span class="glyphicon glyphicon-sunglasses" style="color:#767777"></span>View</router-link>
-					<router-link :to="{name: 'edit-budget', params:{id: budget.id}}"><span class="glyphicon glyphicon-edit" style="color:#767777"></span>Edit</router-link>
+					<router-link :to="{name: 'budget-edit', params:{id: budget.id}}"><span class="glyphicon glyphicon-edit" style="color:#767777"></span>Edit</router-link>
 					<span v-if="showDelete != budget.id">
 							<span class="glyphicon glyphicon-remove" style="color:#767777"></span><a @click="deleteBudget(budget.id)" style="cursor:pointer;text-decoration:underline">delete</a>
 					</span>

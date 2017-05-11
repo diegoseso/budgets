@@ -1,25 +1,40 @@
 <template>
 	<div id="budget-add">
-		<h2>Create new budget</h2>
-		<form v-on:submit.prevent="saveBudget">
-			<p>
-				<label>Description</label>
-				<input type="text" v-model="budget.name" />
-			</p>
-			<p>
-				<label>Total Amount</label>
-				<input type="text" v-model="budget.amount" />
-			</p>
-			<p>
-				<label>Provider</label>
-				<select v-model="budget.provider">
-					<option value="">Please select a provider...</option>
-					<option value="bajo">Paper provider</option>
-					<option value="normal">Electronic provider</option>
-					<option value="alto">Furniture provider</option>
+		<form class="form-style-9" v-on:submit.prevent="saveBudget">
+		    <h2>Create new budget</h2>
+                    <ul>
+                        <li>
+                            <input type="text" name="name" class="field-style field-split align-left" placeholder="Budget name" v-model="budget.name" />
+                            <input type="number" name="field2" class="field-style field-split align-right" placeholder="Amount" v-model="budget.amount" />
+                        </li>
+                        <li>
+                           <p>
+				<label>currency</label>
+				<select class="field-style field-full align-none" v-model="budget.currency">
+			            <option value="">Please select a currency...</option>
+				    <option value="eur">EUR</option>
+				    <option value="usd">USD</option>
 				</select>
-			</p>
-			<input type="submit" value="Save Budget">
+			     </p>
+                        </li>
+                        <li>
+                            <input type="text" name="field3" class="field-style field-full align-none" placeholder="Description..." />
+                        </li>
+                        <li>
+                       	    <p>
+				<label>Provider</label>
+				<select class="field-style field-full align-none" v-model="budget.provider">
+			            <option value="">Please select a provider...</option>
+				    <option value="bajo">Paper provider</option>
+				    <option value="normal">Electronic provider</option>
+				    <option value="alto">Furniture provider</option>
+				</select>
+			     </p>
+                        </li>
+                        <li>
+                            <input type="submit" value="Save budget" />
+                        </li>
+                    </ul>
 		</form>
 	</div>
 </template>

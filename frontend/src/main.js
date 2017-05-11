@@ -14,8 +14,8 @@ Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
 const routes = [
-	{path: '/create-budget', name: 'create-budget', component: AddBudget},
-	{path: '/edit-budget/:id', name: 'edit-budget', component: EditBudget},
+	{path: '/create-budget', name: 'budget-add', component: AddBudget},
+	{path: '/edit-budget/:id', name: 'budget-edit', component: EditBudget},
 	{path: '/budget/:id', name: 'budget', component: Budget},
 	{path: '/budgets', component: BudgetsList},
 	{path: '/help', component: Help},

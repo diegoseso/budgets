@@ -1,5 +1,4 @@
 <template>
-	<h2>This is the {{texto}} page</h2>
 </template>
 
 <script>
@@ -12,3 +11,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import './assets/css/form.css';
+</style>

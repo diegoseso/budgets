@@ -5,6 +5,8 @@
 <script>
 export default {
   name: 'help',
+  mounted(){
+  },
   data () {
     return {
       texto: 'Help'

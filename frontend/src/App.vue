@@ -6,7 +6,7 @@
         </div>      
         <hr>
         <ul>
-            <li><router-link :to="{name:'create-budget'}">Create Budget</router-link></li>
+            <li><router-link :to="{name:'budget-add'}">Create Budget</router-link></li>
             <li><router-link to="/budgets">Budgets list</router-link></li>
             <li><router-link to="/help">Help</router-link></li>
         </ul>

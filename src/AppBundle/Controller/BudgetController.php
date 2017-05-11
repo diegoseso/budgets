@@ -69,25 +69,44 @@ class BudgetController extends Controller
 
 
     /**
-     * @Route("/budget/modify", name="alter")
+     * @Route("/budget/edit", name="edit")
      * @Method({"POST"})
      */
-    public function alterProductAction( Request $request )
+    public function editAction( Request $request )
     {
-        $id = $request->request->get('id');
-        $name = $request->request->get('name');
-        $product = $this->get('doctrine_mongodb')
+        $budgetNewData = json_decode( $request->request->get('json') );
+        
+        $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
-            ->find($id);
-        if (!$product) {
-            throw $this->createNotFoundException('No product found for id '.$id);
+            ->find( $budgetNewData->id );
+        if ( !$budget ) {
+            throw $this->createNotFoundException('No product found for id '.$budgetNewData->id);
         }
-        $product->setName( $name );        
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $dm->persist($product);
-        $dm->flush();
-        die();
+        
+        $budget->setName( $budgetNewData->name );       
+        $budget->setAmount( $budgetNewData->amount );       
+        
+        $budgetMongoDocument = $this->get('doctrine_mongodb')->getManager();
+        $budgetMongoDocument->persist( $budget );
+        $budgetMongoDocument->flush();
+        
+        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budget ) ) );
     }
+    
+    /**
+     * @Route("/budget/attach", name="attach")
+     * @Method({"POST"})
+     */
+    public function attachAction( Request $request )
+    {
+        $a = $request->files->all();
+        
+        var_dump( $a );
+        die();
+        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budget ) ) );
+    }
+  
+    
     /**
      * @Route("/budget/delete/{id}", name="delete")
      * @Method({"DELETE"})
