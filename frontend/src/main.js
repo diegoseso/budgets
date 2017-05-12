@@ -28,6 +28,7 @@ const router = new VueRouter({
 	mode: 'history'
 });
 
+
 Vue.component('home', Home);
 Vue.component('help', Help);
 

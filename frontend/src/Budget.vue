@@ -1,17 +1,16 @@
 <template>
-	<div>
-		<h1>Budget details for # {{budget.name}}</h1>
-		<div id="budget-details" v-if="budget != null">
-			<h2 v-text="budget.name"></h2>
-			<p v-text="budget.description"></p>
-		</div>
-		<span v-else>Loading Budget...</span>
-	</div>
+	<div id="budget-view">
+	    <form class="form-style-9">
+		<h2>Edit budget</h2>
+                <budget-form ref="budget" ></budget-form>	
+	    </form>
+        </div>
 </template>
 
 <script>
-import axios from 'axios';
-export default{
+    import BudgetForm from './components/BudgetForm.vue';
+    import axios from 'axios';
+    export default{
 	name: 'budget-details',
 	mounted(){
 		this.id = this.$route.params.id;
@@ -20,9 +19,14 @@ export default{
 		     .then(( answer ) => {
                         console.log( answer );
 		     	this.budget = answer.data.data;
+                        this.$refs.budget.budget = this.budget;
 		     });
 	},
-	data(){
+	components:
+        {
+            'budget-form': BudgetForm
+        },
+        data(){
 		return {
 	            budget: {
                         id: null,
