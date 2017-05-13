@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\MongoDB\Aggregation\Builder;
+use Doctrine\MongoDB\Aggregation\Expr;
 
 class BudgetController extends Controller
 {
@@ -15,22 +17,22 @@ class BudgetController extends Controller
      * @Route("/budget/add", name="create")
      * @Method({"PUT"})
      */
-    public function newAction( Request $data )
+    public function newAction(Request $data)
     {
         $budget = new Budget();
 
-        $dataForBudget = json_decode( $data->request->get( 'json' ) ); 
+        $dataForBudget = json_decode($data->request->get('json'));
 
-        $budget->setName( $dataForBudget->name );
-        $budget->setAmount( $dataForBudget->amount );
+        $budget->setName($dataForBudget->name);
+        $budget->setAmount($dataForBudget->amount);
 
         $mongoD = $this->get('doctrine_mongodb')->getManager();
         $mongoD->persist($budget);
         $mongoD->flush();
-        
-        return new Response( json_encode( array( 'status'=>'success', 'id'=>$budget->getId() ) ) );
+
+        return new Response(json_encode(array('status' => 'success', 'id' => $budget->getId())));
     }
-    
+
     /**
      * @Route("/budget/view/{id}", name="get")
      * @Method({"GET"})
@@ -39,11 +41,11 @@ class BudgetController extends Controller
     {
         $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
-            ->find( $id );
-        if ( !$budget ) {
-            throw $this->createNotFoundException( 'No product found for id '.$id );
+            ->find($id);
+        if (!$budget) {
+            throw $this->createNotFoundException('No product found for id ' . $id);
         }
-        return new Response( json_encode( array( 'status'=>'success', 'data'=>$this->convertToArray( $budget ) ) ) );
+        return new Response(json_encode(array('status' => 'success', 'data' => $this->convertToArray($budget))));
     }
 
     /**
@@ -52,82 +54,112 @@ class BudgetController extends Controller
      */
     public function getListAction()
     {
+        $budgetList = [];
+
         $budgets = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
             ->findAll();
-        
-        foreach( $budgets as $budget ){
-            $budgetList[] = $this->convertToArray( $budget ); 
-        }
-        
-        if (!$budgets) {
-            throw $this->createNotFoundException('No product found for id '.$id);
-        }
-        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budgetList ) ) );
-    }
 
+        foreach ($budgets as $budget) {
+            $budgetList[] = $this->convertToArray($budget);
+        }
+
+        return new Response(json_encode(array('status' => 'success', 'data' => $budgetList)));
+    }
 
 
     /**
      * @Route("/budget/edit", name="edit")
      * @Method({"POST"})
      */
-    public function editAction( Request $request )
+    public function editAction(Request $request)
     {
-        $budgetNewData = json_decode( $request->request->get('json') );
-        
+        $budgetNewData = json_decode($request->request->get('json'));
+
         $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
-            ->find( $budgetNewData->id );
-        if ( !$budget ) {
-            throw $this->createNotFoundException('No product found for id '.$budgetNewData->id);
+            ->find($budgetNewData->id);
+
+        if (!$budget) {
+            throw $this->createNotFoundException('No product found for id ' . $budgetNewData->id);
         }
-        
-        $budget->setName( $budgetNewData->name );       
-        $budget->setAmount( $budgetNewData->amount );       
-        
+
+        $budget->setName($budgetNewData->name);
+        $budget->setAmount($budgetNewData->amount);
+
         $budgetMongoDocument = $this->get('doctrine_mongodb')->getManager();
-        $budgetMongoDocument->persist( $budget );
+        $budgetMongoDocument->persist($budget);
         $budgetMongoDocument->flush();
-        
-        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budget ) ) );
+
+        return new Response(json_encode(array('status' => 'success', 'data' => $budget)));
     }
-    
+
     /**
      * @Route("/budget/attach", name="attach")
      * @Method({"POST"})
      */
-    public function attachAction( Request $request )
+    public function attachAction(Request $request)
     {
         $a = $request->files->all();
-        
-        var_dump( $a );
+
+        var_dump($a);
         die();
-        return new Response( json_encode( array( 'status'=>'success', 'data'=>$budget ) ) );
+        return new Response(json_encode(array('status' => 'success', 'data' => $budget)));
     }
-  
-    
+
+
     /**
      * @Route("/budget/delete/{id}", name="delete")
      * @Method({"DELETE"})
      */
-    public function deleteAction( $id )
+    public function deleteAction($id)
     {
         $budget = $this->get('doctrine_mongodb')
             ->getRepository('AppBundle:Budget')
-            ->find( $id );
-        if ( !$budget ) {
-            throw $this->createNotFoundException('No product found for id '.$id);
+            ->find($id);
+
+        if (!$budget) {
+            throw $this->createNotFoundException('No product found for id ' . $id);
         }
-        
+
         $mongoD = $this->get('doctrine_mongodb')->getManager();
-        $mongoD->remove( $budget );
+        $mongoD->remove($budget);
         $mongoD->flush();
-        return new Response( json_encode( array( 'status'=>'success' ) ) );
-    
+
+        return new Response(json_encode(array('status' => 'success')));
+
     }
 
-    private function convertToArray( $object )
+    /**
+     * @Route("/budget/totals", name="getList")
+     * @Method({"GET"})
+     */
+    public function getTotalsAction()
+    {
+
+        $totalAmount = 0;
+        $rowNumber = 0;
+        $returnArray = [];
+
+        $budgets = $this->get('doctrine_mongodb')
+            ->getRepository('AppBundle:Budget')
+            ->findAll();
+
+
+        foreach ($budgets as $budget) {
+            $totalAmount += $budget->getAmount();
+            $rowNumber += 1;
+        }
+
+        $returnArray[] = [
+            ['rows' => $rowNumber],
+            ['sum_amount' => $totalAmount]
+        ];
+
+        return new Response(json_encode(array('status' => 'success', 'data' => $returnArray)));
+    }
+
+    private function convertToArray($object)
     {
         return $object->toArray();
     }
