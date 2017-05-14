@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\MongoDB\Aggregation\Builder; 
 
 class BudgetController extends Controller
 {
@@ -106,7 +107,27 @@ class BudgetController extends Controller
         return new Response( json_encode( array( 'status'=>'success', 'data'=>$budget ) ) );
     }
   
-    
+    /**
+     * @Route("/budget/total-budgets", name="total")
+     * @Method({"GET"})
+     */
+    public function totalBudgetsAction( Request $request )
+    {
+
+        $aggregate = array(
+                         array(
+                             '$group' => array( 
+                                 '_id'=>'',
+                                 'sum'=>array('$sum'=>'$amount' )
+                                      )
+                              ),
+                     );
+        $collection =$this->get('doctrine_mongodb')->getManager()->getDocumentCollection( 'AppBundle:Budget');
+        $query = $collection->aggregate( $aggregate );
+        
+        return new Response( json_encode( array( 'status'=>'success', 'data'=>array('sum'=>$query[0]['sum'] ) ) ) );
+    }
+ 
     /**
      * @Route("/budget/delete/{id}", name="delete")
      * @Method({"DELETE"})
